@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Find Your Table</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #ffffff;
+      color: #000000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    input {
+      padding: 12px;
+      font-size: 16px;
+      width: 100%;
+      max-width: 400px;
+      margin: 10px 0;
+      border: 1px solid #000;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-style: italic;
+      width: 100%;
+      max-width: 400px;
+    }
+    .result-item {
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Find Your Table</h1>
+  <input type="text" id="nameInput" placeholder="Start typing your name..." oninput="liveSearch()" />
+  <div id="result"></div>
+
+  <script>
+    let seatingList = [];
+
+    async function loadCSV() {
+      const response = await fetch('seating_chart.csv');
+      const text = await response.text();
+      const rows = text.trim().split('\n').slice(1); // skip header
+
+      seatingList = rows.map(row => {
+        const [name, table] = row.split(',');
+        return {
+          name: name.trim(),
+          nameLower: name.trim().toLowerCase(),
+          table: table.trim()
+        };
+      });
+    }
+
+    async function liveSearch() {
+      if (seatingList.length === 0) {
+        await loadCSV();
+      }
+
+      const input = document.getElementById("nameInput").value.trim().toLowerCase();
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = '';
+
+      if (input.length === 0) return;
+
+      const matches = seatingList.filter(entry => entry.nameLower.includes(input));
+
+      if (matches.length === 0) {
+        resultDiv.textContent = "No matches found.";
+        return;
+      }
+
+      matches.forEach(entry => {
+        const div = document.createElement("div");
+        div.className = "result-item";
+        div.textContent = `${entry.name} — ${entry.table}`;
+        resultDiv.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
