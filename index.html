@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <title>Find Your Table</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Ballet&family=Lora&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Lora', serif;
       background: #ffffff;
       color: #000000;
       display: flex;
@@ -20,10 +20,10 @@
       box-sizing: border-box;
     }
     h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.5em;
-      margin-bottom: 20px;
-      text-align: center;
+      font-family: 'Ballet', cursive;
+      font-size: 4em;
+      font-weight: normal;
+      margin: 0;
     }
     input {
       padding: 12px;
@@ -51,11 +51,12 @@
     section.menu {
       padding: 40px 20px;
       max-width: 800px;
-      margin: 60px auto 0;
+      margin: 30px auto 0;
       text-align: left;
     }
     section.menu h2 {
-      font-family: 'Great Vibes', cursive;
+      font-family: 'Ballet', cursive;
+      font-weight: normal;
       font-size: 2.5em;
       text-align: center;
     }
@@ -74,6 +75,12 @@
   </style>
 </head>
 <body>
+  <div style="text-align: center; margin-bottom: 30px;">
+    <p style="font-family: 'Lora', serif; letter-spacing: 2px; font-size: 14px; margin: 0;">WELCOME TO THE WEDDING OF</p>
+    <h1 style="font-family: 'Ballet', cursive; font-weight: normal;">Bindi & Pratik</h1>
+    <p style="font-family: 'Lora', serif; letter-spacing: 2px; font-size: 14px; margin-top: 5px;">7.25.25</p>
+  </div>
+
   <img src="dog.png" alt="Dog Butler" style="max-width: 300px; width: 100%; display: block; margin: 0 auto 20px;" />
   <h1>Find Your Table</h1>
   <input type="text" id="nameInput" placeholder="Start typing your name..." oninput="liveSearch()" />
@@ -121,7 +128,7 @@
     async function loadCSV() {
       const response = await fetch('seating_chart.csv');
       const text = await response.text();
-      const rows = text.trim().split('\\n').slice(1);
+      const rows = text.trim().split('\n').slice(1);
 
       seatingList = rows.map(row => {
         const [name, table] = row.split(',');
